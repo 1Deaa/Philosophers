@@ -24,7 +24,7 @@ static bool	ft_atol_error(const char *str, int sign, long long result)
 long	ft_atol(const char *str)
 {
 	long long	result;
-	int		sign;
+	int			sign;
 
 	result = 0;
 	sign = 1;
