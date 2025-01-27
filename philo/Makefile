@@ -2,7 +2,7 @@
 NAME = philo
 
 #PROJECT FILES
-FILES = ft_atoi.c philo.c
+FILES = ft_atol.c philo.c analyze_input.c
 INCLUDE = philo.h
 
 #COMPILER

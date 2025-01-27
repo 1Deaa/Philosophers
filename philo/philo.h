@@ -21,32 +21,41 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-int		ft_atoi(const char *str);
-bool	is_wrong_args(int argc, char **argv);
+typedef pthread_mutex_t t_mtx;
+typedef struct s_main t_main;
 
 typedef struct s_fork
 {
-	int					fork_id;
-	pthread_mutex_t		fork;
+	int			fork_id;
+	t_mtx		fork;
 }	t_fork;
 
 typedef struct s_philo
 {
 	int			id;
-	int			last_meal_time;
+	long		last_meal_time;
+	long		meals_counter;
+	bool		full;
 	t_fork		*left_fork;
 	t_fork		*right_fork;
 	pthread_t	thread_id;
+	t_main		*table;
 }	t_philo;
 
 typedef struct s_main
 {
-	int		philo_nbr;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
+	long		philo_nbr;
+	long		time_to_die;
+	long		time_to_eat;
+	long		time_to_sleep;
+	long		max_meals;
+	long		start_simulation;
+	bool		end_simulation;
 	t_philo	*philo;
 	t_fork	*fork;
 }	t_main;
+
+long	ft_atol(const char *str);
+bool	analyze_input(t_main *table, char **argv);
 
 #endif

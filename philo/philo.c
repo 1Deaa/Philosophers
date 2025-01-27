@@ -12,25 +12,25 @@
 
 #include "philo.h"
 
-bool	is_wrong_args(int argc, char **argv)
-{
-	if (argc != 5)
-	{					//        200           60     60      60
-		printf("Usage: ./philo [philosophers] [death] [eat] [sleep]\n");
-		return (EXIT_FAILURE);
-	}
-	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[2]) <= 0
-		|| ft_atoi(argv[3]) <= 0 || ft_atoi(argv[4]) <= 0)
-	{
-		printf("Args must be positive values.\n");
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
 int	main(int argc, char **argv)
 {
-	if (is_wrong_args(argc, argv))
-		return (EXIT_FAILURE); // change as needed ✔ 
-	return (EXIT_SUCCESS);
+	t_main	table;
+
+	if (argc == 5 || argc == 6)
+	{
+		//1)
+		if (!analyze_input(&table, argv))
+			return (EXIT_FAILURE);
+		//2)
+		init_table(&table);
+		//3)
+		//start_simulation(&table);
+		//4)
+		//clean_simulation(&table);
+	}
+	else
+	{
+		printf("Wrong input:\n./philo num time time time [num]\n");
+		return (EXIT_FAILURE);
+	}
 }

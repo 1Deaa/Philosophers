@@ -12,18 +12,18 @@
 
 #include "philo.h"
 
-static int	ft_atoi_error(const char *str, int sign, long result)
+static bool	ft_atol_error(const char *str, int sign, long long result)
 {
-	if (sign == 1 && (result > ((INT_MAX) - (*str - '0')) / 10))
+	if (sign == 1 && (result > ((LONG_MAX) - (*str - '0')) / 10))
 		return (1);
-	if (sign == -1 && (result > ((-(long)INT_MIN) - (*str - '0')) / 10))
+	if (sign == -1 && (result > ((-(long long)LONG_MAX) - (*str - '0')) / 10))
 		return (1);
 	return (0);
 }
 
-int	ft_atoi(const char *str)
+long	ft_atol(const char *str)
 {
-	long	result;
+	long long	result;
 	int		sign;
 
 	result = 0;
@@ -39,7 +39,7 @@ int	ft_atoi(const char *str)
 		str++;
 	while (*str >= '0' && *str <= '9')
 	{
-		if (ft_atoi_error(str, sign, result))
+		if (ft_atol_error(str, sign, result))
 			return (0);
 		result = result * 10 + (*str - '0');
 		str++;
