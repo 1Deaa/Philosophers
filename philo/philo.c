@@ -20,9 +20,16 @@ int	main(int argc, char **argv)
 	{
 		//1)
 		if (!analyze_input(&table, argv))
+		{
+			printf("Error while analyzing input!\n");
 			return (EXIT_FAILURE);
+		}
 		//2)
-		init_table(&table);
+		if (!init_table(&table))
+		{
+			printf("Error while initiating table!\n");
+			return (EXIT_FAILURE);
+		}
 		//3)
 		//start_simulation(&table);
 		//4)
