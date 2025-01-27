@@ -20,9 +20,24 @@
 # include <limits.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <errno.h>
 
-typedef pthread_mutex_t t_mtx;
-typedef struct s_main t_main;
+typedef enum e_codes
+{
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETACH,
+}	t_codes;
+
+/*
+A smaller name for pthread_mutex_t
+*/
+typedef pthread_mutex_t	t_mtx;
+typedef struct s_main	t_main;
 
 typedef struct s_fork
 {
@@ -51,11 +66,46 @@ typedef struct s_main
 	long		max_meals;
 	long		start_simulation;
 	bool		end_simulation;
-	t_philo	*philo;
-	t_fork	*fork;
+	t_philo		*philos;
+	t_fork		*forks;
 }	t_main;
 
+/*
+This function is a wrapper for the original
+malloc function but prints error message.
+*/
+void	*ft_malloc(size_t memory);
+/*
+This function is a wrapper for all the
+mutex functions I need through the program
+with error messages.
+Success Return Value: 1
+Failure Return Value: 0
+*/
+int		ft_mutex(t_mtx *mutex, t_codes code);
+/*
+This function is a wrapper for all the
+thread functions I need through the program
+with error messages and return values.
+Success Return Value: 1
+Failure Return Value: 0
+*/
+int		ft_thread(pthread_t *thread, void *(*func)(void *),
+			void *data, t_codes code);
+/*
+This function is designed to work only
+on this program not the original atol.
+*/
 long	ft_atol(const char *str);
+/*
+Analyzes the input to check if it meets
+the program requirements and assign it.
+*/
 bool	analyze_input(t_main *table, char **argv);
+/*
+Initialize the table to start working
+on the simulation.
+*/
+bool	init_table(t_main *table);
 
 #endif
