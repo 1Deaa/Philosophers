@@ -18,26 +18,22 @@ int	main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
-		//1)
 		if (!analyze_input(&table, argv))
 		{
 			printf("Error while analyzing input!\n");
 			return (EXIT_FAILURE);
 		}
-		//2)
 		if (!init_table(&table))
 		{
 			printf("Error while initiating table!\n");
 			return (EXIT_FAILURE);
 		}
-		//3)
-		//start_simulation(&table);
-		//4)
-		//clean_simulation(&table);
 	}
 	else
 	{
-		printf("Wrong input:\n./philo num time time time [num]\n");
+		printf("Wrong input:\n./philo [%s] [%s] [%s] [%s] *[%s]\n",
+			"Number of philosophers", "time_to_die", "time_to_eat",
+			"time_to_sleep", "number_of_times_each_philosopher_must_eat");
 		return (EXIT_FAILURE);
 	}
 }
