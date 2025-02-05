@@ -12,6 +12,23 @@
 
 #include "philo.h"
 
+void	*one_philo(void	*data)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)data;
+	wait_all_threads(philo->table);
+	if (!set_long(&philo->philo_mutex, &philo->last_meal_time, get_time(MILLISECONDS)))
+		return (NULL);
+	if (!increase_long(&philo->table->table_mutex, &philo->table->running_threads_number))
+		return (NULL);
+	if (!print_status(philo, TAKE_FIRST_FORK))
+		return (NULL);
+	while (!simulation_finished(philo->table))
+		usleep(200);
+	return (NULL);
+}
+
 static void	thinking(t_philo *philo)
 {
 	if (!print_status(philo, THINKING))
@@ -30,11 +47,12 @@ static void	eat(t_philo *philo)
 		return ;
 	if (!set_long(&philo->philo_mutex, &philo->last_meal_time, get_time(MILLISECONDS)))
 		return ;
-	philo->meals_counter++;
+	if (!set_long(&philo->philo_mutex, &philo->meals_counter, philo->meals_counter + 1))
+		return ;
 	if (!print_status(philo, EATING))
 		return ;
 	smart_usleep(philo->table->time_to_eat, philo->table);
-	if (philo->meals_counter == philo->table->max_meals)
+	if (philo->meals_counter == philo->table->max_meals && philo->table->max_meals > 0)
 		if (!set_bool(&philo->philo_mutex, &philo->full, true))
 			return ;
 	if (!ft_mutex(&philo->right_fork->fork, UNLOCK))
@@ -49,6 +67,10 @@ void	*dinner_simulation(void *data)
 
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
+
+	if (!set_long(&philo->philo_mutex, &philo->last_meal_time, get_time(MILLISECONDS)))
+		return (NULL);
+	increase_long(&philo->table->table_mutex, &philo->table->running_threads_number);
 	while (!simulation_finished(philo->table))
 	{
 		if (philo->full)
@@ -67,25 +89,35 @@ bool    start_simulation(t_main *table)
 	int i;
 
 	i = -1;
-	if (table->philo_nbr == 1)
+	if (1 == table->philo_nbr)
 	{
-		//TODO
+		if (!ft_thread(&table->philos[0].thread_id, one_philo, &table->philos[0], CREATE))
+			return (false);
 	}
-	while (++i < table->philo_nbr)
+	else
 	{
-		if (!ft_thread(&table->philos[i].thread_id, dinner_simulation,
-			&table->philos[i], CREATE))
+		while (++i < table->philo_nbr)
 		{
-			printf("Thread creation failed");
+			if (!ft_thread(&table->philos[i].thread_id, dinner_simulation,
+				&table->philos[i], CREATE))
+			{
+				printf("Thread creation failed");
+				return (false);
+			}
+		}
+		if (!ft_thread(&table->monitor, monitor_dinner, table, CREATE))
+		{
+			mutex_init_failure(table, table->philo_nbr);
 			return (false);
 		}
-	}
-	table->start_simulation = get_time(MILLISECONDS);
-	set_bool(&table->table_mutex, &table->all_threads_ready, true);
-	if (!join_all_threads(table))
-	{
-		philo_mutex_init_failure(table->philos, table->philo_nbr);
-		return (false);
+		table->start_simulation = get_time(MILLISECONDS);
+		set_bool(&table->table_mutex, &table->all_threads_ready, true);
+		if (!join_all_threads(table))
+		{
+			philo_mutex_init_failure(table->philos, table->philo_nbr);
+			return (false);
+		}
+		return (true);
 	}
 	return (true);
 }

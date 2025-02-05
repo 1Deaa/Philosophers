@@ -85,8 +85,10 @@ typedef struct s_main
 	long		time_to_sleep;
 	long		max_meals;
 	long		start_simulation;
+	long		running_threads_number;
 	bool		all_threads_ready;
 	bool		end_simulation;
+	pthread_t	monitor;
 	t_mtx		table_mutex;
 	t_mtx		print_mutex;
 	t_philo		*philos;
@@ -165,5 +167,19 @@ Join all created threads.
 bool	join_all_threads(t_main *table);
 void	philo_mutex_init_failure(t_philo *philo, int index);
 void	mutex_init_failure(t_main *table, int index);
+/*
+Monitor the simulation!
+*/
+void	*monitor_dinner(void *data);
+/*
+Increases a long by 1 thread safe.
+*/
+bool	increase_long(t_mtx *mutex, long *value);
+
+/*
+Checks if all the threads are running or not.
+*/
+bool    all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
+
 
 #endif

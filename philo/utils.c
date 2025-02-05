@@ -78,3 +78,13 @@ void	philo_mutex_init_failure(t_philo *philo, int index)
 	}
 	mutex_init_failure(philo->table, philo->table->philo_nbr);
 }
+
+bool	increase_long(t_mtx *mutex, long *value)
+{
+	if (!ft_mutex(mutex, LOCK))
+		return (false);
+	(*value)++;
+	if (!ft_mutex(mutex, UNLOCK))
+		return (false);
+	return (true);
+}
