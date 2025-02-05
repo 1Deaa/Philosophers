@@ -2,14 +2,15 @@
 NAME = philo
 
 #PROJECT FILES
-FILES = ft_atol.c philo.c analyze_input.c init_table.c wrappers.c
+FILES = analyze_input.c ft_atol.c init_table.c philo.c print.c safe_functions.c \
+		simulation.c sync.c utils.c wrappers.c
 
 #COMPILER
 CC = cc
 RM = rm -rf
 
 #FLAGS
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
 #COLORS
 DEF_COLOR = \e[1;39m

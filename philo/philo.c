@@ -28,12 +28,18 @@ int	main(int argc, char **argv)
 			printf("Error while initiating table!\n");
 			return (EXIT_FAILURE);
 		}
+		if (!start_simulation(&table))
+		{
+			printf("Error while simulation\n");
+			return (EXIT_FAILURE);
+		}
+		//Clean simulation(4).
 	}
 	else
 	{
-		printf("Wrong input:\n./philo [%s] [%s] [%s] [%s] *[%s]\n",
-			"Number of philosophers", "time_to_die", "time_to_eat",
-			"time_to_sleep", "number_of_times_each_philosopher_must_eat");
+		printf("Wrong input:\n./philo [%s] [%s] [%s] [%s] *[%s]*\n",
+			"philosophers", "die", "eat",
+			"sleep", "meals_must_eat");
 		return (EXIT_FAILURE);
 	}
 }

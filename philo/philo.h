@@ -22,6 +22,8 @@
 # include <sys/time.h>
 # include <errno.h>
 
+# define F_RDLONG -99
+
 typedef enum e_codes
 {
 	LOCK,
@@ -32,6 +34,23 @@ typedef enum e_codes
 	JOIN,
 	DETACH,
 }	t_codes;
+
+typedef enum e_status
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	TAKE_FIRST_FORK,
+	TAKE_SECOND_FORK,
+	DIED,
+}	t_status;
+
+typedef enum e_time
+{
+	MILLISECONDS,
+	MICROSECONDS,
+	SECONDS,
+}	t_time;
 
 /*
 A smaller name for pthread_mutex_t
@@ -54,6 +73,7 @@ typedef struct s_philo
 	t_fork		*left_fork;
 	t_fork		*right_fork;
 	pthread_t	thread_id;
+	t_mtx		philo_mutex;
 	t_main		*table;
 }	t_philo;
 
@@ -65,7 +85,10 @@ typedef struct s_main
 	long		time_to_sleep;
 	long		max_meals;
 	long		start_simulation;
+	bool		all_threads_ready;
 	bool		end_simulation;
+	t_mtx		table_mutex;
+	t_mtx		print_mutex;
 	t_philo		*philos;
 	t_fork		*forks;
 }	t_main;
@@ -107,5 +130,40 @@ Initialize the table to start working
 on the simulation.
 */
 bool	init_table(t_main *table);
+/*
+Start the simulation function!
+*/
+bool    start_simulation(t_main *table);
+/*
+Safe functions to read/set
+*/
+bool    set_bool(t_mtx *mutex, bool *dest, bool value);
+bool    read_bool(t_mtx *mutex, bool *value);
+bool	set_long(t_mtx *mutex, long *dest, long value);
+long	read_long(t_mtx *mutex, long *value);
+bool	simulation_finished(t_main *table);
+/*
+Wait for all threads to be ready.
+*/
+void	wait_all_threads(t_main *table);
+/*
+Get time of day function.
+*/
+long    get_time(t_time code);
+/*
+Better version of usleep() function.
+*/
+void	smart_usleep(long usec, t_main *table);
+/*
+Prints the status of a philosopher
+*/
+bool	print_status(t_philo *philo, t_status status);
+
+/*
+Join all created threads.
+*/
+bool	join_all_threads(t_main *table);
+void	philo_mutex_init_failure(t_philo *philo, int index);
+void	mutex_init_failure(t_main *table, int index);
 
 #endif

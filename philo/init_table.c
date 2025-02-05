@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-static void	mutex_init_failure(t_main *table, int index)
+void	mutex_init_failure(t_main *table, int index)
 {
 	int	i;
 
@@ -52,6 +52,11 @@ static bool	philo_init(t_main *table)
 		table->philos[i].full = false;
 		table->philos[i].meals_counter = 0;
 		table->philos[i].table = table;
+		if (!ft_mutex(&table->philos[i].philo_mutex, INIT))
+		{
+			philo_mutex_init_failure(table->philos, i);
+			return (false);
+		}
 		assign_forks(&table->philos[i], table->forks, i);
 	}
 	return (true);
@@ -77,7 +82,12 @@ static bool	forks_init(t_main *table)
 bool	init_table(t_main *table)
 {
 	table->end_simulation = false;
+	table->all_threads_ready = false;
 	table->philos = ft_malloc(sizeof(t_philo) * table->philo_nbr);
+	if (!ft_mutex(&table->table_mutex, INIT))
+		return (false);
+	if (!ft_mutex(&table->print_mutex, INIT))
+		return (false);
 	if (!(table->philos))
 		return (false);
 	table->forks = ft_malloc(sizeof(t_fork) * table->philo_nbr);
