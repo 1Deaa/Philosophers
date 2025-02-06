@@ -28,9 +28,7 @@ bool	analyze_input(t_main *table, char **argv)
 		}
 	}
 	else
-	{
 		table->max_meals = 0;
-	}
 	if (table->philo_nbr < 1 || table->time_to_die < 1
 		|| table->time_to_eat < 1 || table->time_to_sleep < 1)
 	{

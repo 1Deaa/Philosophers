@@ -18,12 +18,9 @@ void	*one_philo(void	*data)
 
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
-	if (!set_long(&philo->philo_mutex, &philo->last_meal_time, get_time(MILLISECONDS)))
-		return (NULL);
-	if (!increase_long(&philo->table->table_mutex, &philo->table->running_threads_number))
-		return (NULL);
-	if (!print_status(philo, TAKE_FIRST_FORK))
-		return (NULL);
+	set_long(&philo->philo_mutex, &philo->last_meal_time, get_time(MILLISECONDS));
+	increase_long(&philo->table->table_mutex, &philo->table->running_threads_number);
+	print_status(philo, TAKE_FIRST_FORK);
 	while (!simulation_finished(philo->table))
 		usleep(200);
 	return (NULL);
@@ -67,7 +64,6 @@ void	*dinner_simulation(void *data)
 
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
-
 	if (!set_long(&philo->philo_mutex, &philo->last_meal_time, get_time(MILLISECONDS)))
 		return (NULL);
 	increase_long(&philo->table->table_mutex, &philo->table->running_threads_number);
@@ -89,7 +85,7 @@ bool    start_simulation(t_main *table)
 	int i;
 
 	i = -1;
-	if (1 == table->philo_nbr)
+	if (table->philo_nbr == 1)
 	{
 		if (!ft_thread(&table->philos[0].thread_id, one_philo, &table->philos[0], CREATE))
 			return (false);
@@ -105,19 +101,19 @@ bool    start_simulation(t_main *table)
 				return (false);
 			}
 		}
-		if (!ft_thread(&table->monitor, monitor_dinner, table, CREATE))
-		{
-			mutex_init_failure(table, table->philo_nbr);
-			return (false);
-		}
-		table->start_simulation = get_time(MILLISECONDS);
-		set_bool(&table->table_mutex, &table->all_threads_ready, true);
-		if (!join_all_threads(table))
-		{
-			philo_mutex_init_failure(table->philos, table->philo_nbr);
-			return (false);
-		}
-		return (true);
+	}
+	if (!ft_thread(&table->monitor, monitor_dinner, table, CREATE))
+	{
+		mutex_init_failure(table, table->philo_nbr);
+		return (false);
+	}
+	table->start_simulation = get_time(MILLISECONDS);
+	if (!set_bool(&table->table_mutex, &table->all_threads_ready, true))
+		return (false);
+	if (!join_all_threads(table))
+	{
+		philo_mutex_init_failure(table->philos, table->philo_nbr);
+		return (false);
 	}
 	return (true);
 }
