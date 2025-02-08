@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-bool    set_bool(t_mtx *mutex, bool *dest, bool value)
+bool	set_bool(t_mtx *mutex, bool *dest, bool value)
 {
 	if (!ft_mutex(mutex, LOCK))
 		return (false);
@@ -22,7 +22,7 @@ bool    set_bool(t_mtx *mutex, bool *dest, bool value)
 	return (true);
 }
 
-bool    read_bool(t_mtx *mutex, bool *value)
+bool	read_bool(t_mtx *mutex, bool *value)
 {
 	bool	ret;
 
@@ -47,6 +47,7 @@ bool	set_long(t_mtx *mutex, long *dest, long value)
 long	read_long(t_mtx *mutex, long *value)
 {
 	long	ret;
+
 	if (!ft_mutex(mutex, LOCK))
 		return (F_RDLONG);
 	ret = *value;

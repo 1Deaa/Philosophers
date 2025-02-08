@@ -3,15 +3,14 @@ NAME = philo
 
 #PROJECT FILES
 FILES = analyze_input.c ft_atol.c init_table.c philo.c print.c safe_functions.c \
-		simulation.c sync.c utils.c wrappers.c monitor.c
+		simulation.c sync.c utils.c wrappers.c monitor.c clean.c one_philo.c
 
 #COMPILER
 CC = cc
 RM = rm -rf
 
 #FLAGS
-CFLAGS = -g -Wall -Wextra -Werror -pthread
-
+CFLAGS = -Wall -Wextra -Werror -pthread
 #COLORS
 DEF_COLOR = \e[1;39m
 RESET = \e[0m

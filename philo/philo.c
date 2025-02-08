@@ -12,34 +12,31 @@
 
 #include "philo.h"
 
+static void	wrong_arguments(void)
+{
+	printf("Wrong input:\n./philo [%s] [%s] [%s] [%s] *[%s]*\n",
+		"philosophers", "die", "eat",
+		"sleep", "meals_must_eat");
+}
+
 int	main(int argc, char **argv)
 {
 	t_main	table;
 
 	if (argc == 5 || argc == 6)
 	{
-		if (!analyze_input(&table, argv))
-		{
-			printf("Error while analyzing input!\n");
+		if (!analyze_input(&table, argv) || !init_table(&table))
 			return (EXIT_FAILURE);
-		}
-		if (!init_table(&table))
-		{
-			printf("Error while initiating table!\n");
-			return (EXIT_FAILURE);
-		}
 		if (!start_simulation(&table))
 		{
 			printf("Error while simulation\n");
 			return (EXIT_FAILURE);
 		}
-		//Clean simulation(4).
+		clean(&table);
 	}
 	else
 	{
-		printf("Wrong input:\n./philo [%s] [%s] [%s] [%s] *[%s]*\n",
-			"philosophers", "die", "eat",
-			"sleep", "meals_must_eat");
+		wrong_arguments();
 		return (EXIT_FAILURE);
 	}
 }

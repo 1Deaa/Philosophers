@@ -23,15 +23,15 @@ bool	print_status(t_philo *philo, t_status status)
 		return (false);
 	if ((TAKE_FIRST_FORK == status || TAKE_SECOND_FORK == status)
 		&& !simulation_finished(philo->table))
-		printf(CYAN"%ld   %d has taken a fork\n", elapsed, philo->id);
+		printf(CYAN"%ld   %d has taken a fork\n"RESET, elapsed, philo->id);
 	else if (EATING == status && !simulation_finished(philo->table))
 		printf(MAGENTA"%ld   %d is eating\n"RESET, elapsed, philo->id);
 	else if (SLEEPING == status && !simulation_finished(philo->table))
 		printf(BLUE"%ld   %d is sleeping\n"RESET, elapsed, philo->id);
 	else if (THINKING == status && !simulation_finished(philo->table))
 		printf(GREEN"%ld   %d is thinking\n"RESET, elapsed, philo->id);
-	else if (DIED == status && !simulation_finished(philo->table))
-		printf(RED"%ld   %d died\n", elapsed, philo->id);
+	else if (DIED == status)
+		printf(RED"%ld   %d died\n"RESET, elapsed, philo->id);
 	if (!ft_mutex(&philo->table->print_mutex, UNLOCK))
 		return (false);
 	return (true);

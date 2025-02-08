@@ -37,4 +37,3 @@ bool	analyze_input(t_main *table, char **argv)
 	}
 	return (true);
 }
-

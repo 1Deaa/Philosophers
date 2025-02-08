@@ -52,6 +52,7 @@ static bool	philo_init(t_main *table)
 		table->philos[i].full = false;
 		table->philos[i].meals_counter = 0;
 		table->philos[i].table = table;
+		table->philos[i].last_meal_time = 0;
 		if (!ft_mutex(&table->philos[i].philo_mutex, INIT))
 		{
 			philo_mutex_init_failure(table->philos, i);

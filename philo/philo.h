@@ -143,12 +143,12 @@ bool	init_table(t_main *table);
 /*
 Start the simulation function!
 */
-bool    start_simulation(t_main *table);
+bool	start_simulation(t_main *table);
 /*
 Safe functions to read/set
 */
-bool    set_bool(t_mtx *mutex, bool *dest, bool value);
-bool    read_bool(t_mtx *mutex, bool *value);
+bool	set_bool(t_mtx *mutex, bool *dest, bool value);
+bool	read_bool(t_mtx *mutex, bool *value);
 bool	set_long(t_mtx *mutex, long *dest, long value);
 long	read_long(t_mtx *mutex, long *value);
 bool	simulation_finished(t_main *table);
@@ -159,7 +159,7 @@ void	wait_all_threads(t_main *table);
 /*
 Get time of day function.
 */
-long    get_time(t_time code);
+long	get_time(t_time code);
 /*
 Better version of usleep() function.
 */
@@ -187,7 +187,7 @@ bool	increase_long(t_mtx *mutex, long *value);
 /*
 Checks if all the threads are running or not.
 */
-bool    all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
+bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
 
 /*
 Philo think function.
@@ -201,6 +201,15 @@ void	unsync(t_philo *philo);
 /*
 Used in smart_usleep.
 */
-void    safe_usleep(long usec, t_main *table);
+void	safe_usleep(long usec, t_main *table);
+
+/*
+clean function.
+*/
+void	clean(t_main *table);
+
+bool	philo_died(t_philo *philo);
+
+void	*one_philo(void	*data);
 
 #endif
