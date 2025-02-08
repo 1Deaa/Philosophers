@@ -11,6 +11,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Linux Make Check
       run: |
+        cd philo/
         make re
         make clean
     - name: Test Case 1
