@@ -26,10 +26,23 @@ void	*one_philo(void	*data)
 	return (NULL);
 }
 
-static void	thinking(t_philo *philo)
+void	thinking(t_philo *philo, bool pre_simulation)
 {
-	if (!print_status(philo, THINKING))
+	long	t_eat;
+	long	t_sleep;
+	long	t_think;
+
+	if (!pre_simulation)
+		if (!print_status(philo, THINKING))
+			return ;
+	if (philo->table->philo_nbr % 2 == 0)
 		return ;
+	t_eat = philo->table->time_to_eat;
+	t_sleep = philo->table->time_to_sleep;
+	t_think = (t_eat * 2) - t_sleep;
+	if (t_think < 0)
+		t_think = 0;
+	smart_usleep(t_think * 0.42, philo->table);
 }
 
 static void	eat(t_philo *philo)
@@ -44,8 +57,7 @@ static void	eat(t_philo *philo)
 		return ;
 	if (!set_long(&philo->philo_mutex, &philo->last_meal_time, get_time(MILLISECONDS)))
 		return ;
-	if (!set_long(&philo->philo_mutex, &philo->meals_counter, philo->meals_counter + 1))
-		return ;
+	philo->meals_counter++;
 	if (!print_status(philo, EATING))
 		return ;
 	smart_usleep(philo->table->time_to_eat, philo->table);
@@ -67,15 +79,16 @@ void	*dinner_simulation(void *data)
 	if (!set_long(&philo->philo_mutex, &philo->last_meal_time, get_time(MILLISECONDS)))
 		return (NULL);
 	increase_long(&philo->table->table_mutex, &philo->table->running_threads_number);
+	unsync(philo);
 	while (!simulation_finished(philo->table))
 	{
-		if (philo->full)
+		if (read_bool(&philo->philo_mutex, &philo->full))
 			break;
 		eat(philo);
 		if (!print_status(philo, SLEEPING))
 			return (NULL);
 		smart_usleep(philo->table->time_to_sleep, philo->table);
-		thinking(philo);
+		thinking(philo, false);
 	}
 	return (NULL);
 }
@@ -115,5 +128,9 @@ bool    start_simulation(t_main *table)
 		philo_mutex_init_failure(table->philos, table->philo_nbr);
 		return (false);
 	}
+	if (!set_bool(&table->table_mutex, &table->end_simulation, true))
+		return (false);
+	if (!ft_thread(&table->monitor, NULL, NULL, JOIN))
+		return (false);
 	return (true);
 }

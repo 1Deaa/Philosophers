@@ -42,9 +42,9 @@ void	*monitor_dinner(void *data)
 		{
 			if (philo_died(table->philos + i))
 			{
-				if (!set_bool(&table->table_mutex, &table->end_simulation, true))
-					return (NULL);
 				if (!print_status(table->philos + i, DIED))
+					return (NULL);
+				if (!set_bool(&table->table_mutex, &table->end_simulation, true))
 					return (NULL);
 			}
 		}

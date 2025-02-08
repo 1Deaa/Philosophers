@@ -23,6 +23,14 @@
 # include <errno.h>
 
 # define F_RDLONG -99
+# define RESET   "\033[0m"
+# define RED     "\033[31m"
+# define GREEN   "\033[32m"
+# define YELLOW  "\033[33m"
+# define BLUE    "\033[34m"
+# define MAGENTA "\033[35m"
+# define CYAN    "\033[36m"
+# define WHITE   "\033[37m"
 
 typedef enum e_codes
 {
@@ -181,5 +189,18 @@ Checks if all the threads are running or not.
 */
 bool    all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
 
+/*
+Philo think function.
+*/
+void	thinking(t_philo *philo, bool pre_simulation);
+/*
+Desynchronize philos
+*/
+void	unsync(t_philo *philo);
+
+/*
+Used in smart_usleep.
+*/
+void    safe_usleep(long usec, t_main *table);
 
 #endif

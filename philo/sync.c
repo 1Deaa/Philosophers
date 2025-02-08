@@ -32,3 +32,28 @@ bool    all_threads_running(t_mtx *mutex, long *threads, long philo_nbr)
     return (ret);
 }
 
+void	unsync(t_philo *philo)
+{
+	if (philo->table->philo_nbr % 2 == 0)
+	{
+		if (philo->id % 2 == 0)
+			smart_usleep(3e4, philo->table);
+	}
+	else
+	{
+		if (philo->id % 2 != 0)
+			thinking(philo, true);
+	}
+}
+
+void    safe_usleep(long usec, t_main *table)
+{
+    long    total;
+
+    total = 0;
+    while (total < usec && !simulation_finished(table))
+    {
+        usleep(100);
+        total += 100;
+    }
+}

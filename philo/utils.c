@@ -41,7 +41,7 @@ void	smart_usleep(long usec, t_main *table)
 		elapsed = (get_time(MICROSECONDS)) - start;
 		rem = usec - elapsed;
 		if (rem > 1e3)
-			usleep(rem / 2);
+			safe_usleep(rem / 2, table);
 		else
 		{
 			while((get_time(MICROSECONDS)) - start < usec)
