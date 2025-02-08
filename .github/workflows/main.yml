@@ -15,10 +15,10 @@ jobs:
         make re
         make clean
     - name: Test Case 1
-      run: ./philo 1 800 200 200
+      run: cd && ./philo 1 800 200 200
     - name: Test Case 2
-      run: ./philo 5 800 200 200 7
+      run: cd && ./philo 5 800 200 200 7
     - name: Test Case 3
-      run: ./philo 4 310 200 100
+      run: cd && ./philo 4 310 200 100
     - name: Test Case 4
-      run: ./philo 2 100 200000 100000
+      run: cd && ./philo 2 100 200000 100000
