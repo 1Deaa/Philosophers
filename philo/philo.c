@@ -30,6 +30,9 @@ int	main(int argc, char **argv)
 		if (!start_simulation(&table))
 		{
 			printf("Error while simulation\n");
+			failure_join(&table, table.philos_created);
+			if (table.all_threads_ready == true)
+				pthread_join(table.monitor, NULL);
 			clean(&table);
 			return (EXIT_FAILURE);
 		}

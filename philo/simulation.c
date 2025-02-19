@@ -87,7 +87,6 @@ static bool	simulation_part(t_main *table)
 	if (!ft_thread(&table->monitor, monitor_dinner, table, CREATE))
 	{
 		set_bool(&table->table_mutex, &table->failure, true);
-		failure_join(table, table->philo_nbr);
 		return (false);
 	}
 	table->start_simulation = get_time(MILLISECONDS);
@@ -120,11 +119,11 @@ bool	start_simulation(t_main *table)
 	{
 		while (++i < table->philo_nbr)
 		{
+			table->philos_created++;
 			if (!ft_thread(&table->philos[i].thread_id, dinner_simulation,
 					&table->philos[i], CREATE))
 			{
 				set_bool(&table->table_mutex, &table->failure, true);
-				failure_join(table, i + 1);
 				return (false);
 			}
 		}

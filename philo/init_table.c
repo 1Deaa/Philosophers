@@ -86,6 +86,7 @@ bool	init_table(t_main *table)
 	table->all_threads_ready = false;
 	table->failure = false;
 	table->running_threads_number = 0;
+	table->philos_created = 0;
 	table->philos = calloc(sizeof(t_philo) * table->philo_nbr, 1);
 	if (!ft_mutex(&table->table_mutex, INIT))
 		return (false);

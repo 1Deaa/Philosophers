@@ -92,6 +92,7 @@ typedef struct s_main
 	long		time_to_eat;
 	long		time_to_sleep;
 	long		max_meals;
+	long		philos_created;
 	long		start_simulation;
 	long		running_threads_number;
 	bool		all_threads_ready;
