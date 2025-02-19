@@ -45,6 +45,7 @@ int	ft_mutex(t_mtx *mutex, t_codes code)
 {
 	int	ret;
 
+	ret = 0;
 	if (code == LOCK)
 		ret = handle_mutex_errors(pthread_mutex_lock(mutex), code);
 	else if (code == UNLOCK)
@@ -80,6 +81,7 @@ int	ft_thread(pthread_t *thread, void *(*func)(void *),
 {
 	int	ret;
 
+	ret = 0;
 	if (code == CREATE)
 		ret = handle_thread_errors(pthread_create
 				(thread, NULL, func, data), code);

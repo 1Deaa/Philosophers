@@ -61,6 +61,8 @@ void	*dinner_simulation(void *data)
 
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
+	if (read_bool(&philo->table->table_mutex, &philo->table->failure))
+		return (NULL);
 	if (!set_long(&philo->philo_mutex, &philo->last_meal_time,
 			get_time(MILLISECONDS)))
 		return (NULL);
@@ -84,7 +86,8 @@ static bool	simulation_part(t_main *table)
 {
 	if (!ft_thread(&table->monitor, monitor_dinner, table, CREATE))
 	{
-		mutex_init_failure(table, table->philo_nbr);
+		set_bool(&table->table_mutex, &table->failure, true);
+		failure_join(table, table->philo_nbr);
 		return (false);
 	}
 	table->start_simulation = get_time(MILLISECONDS);
@@ -120,6 +123,8 @@ bool	start_simulation(t_main *table)
 			if (!ft_thread(&table->philos[i].thread_id, dinner_simulation,
 					&table->philos[i], CREATE))
 			{
+				set_bool(&table->table_mutex, &table->failure, true);
+				failure_join(table, i + 1);
 				return (false);
 			}
 		}

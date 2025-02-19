@@ -54,13 +54,14 @@ bool	join_all_threads(t_main *table)
 {
 	int	i;
 
-	i = -1;
-	while (++i < table->philo_nbr)
+	i = 0;
+	while (i < table->philo_nbr)
 	{
 		if (!ft_thread(&table->philos[i].thread_id, NULL, NULL, JOIN))
 		{
 			return (false);
 		}
+		i++;
 	}
 	return (true);
 }

@@ -15,7 +15,10 @@
 void	wait_all_threads(t_main *table)
 {
 	while (!read_bool(&table->table_mutex, &table->all_threads_ready))
-		;
+	{
+		if (read_bool(&table->table_mutex, &table->failure))
+			break ;
+	}
 }
 
 bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr)
@@ -37,7 +40,7 @@ void	unsync(t_philo *philo)
 	if (philo->table->philo_nbr % 2 == 0)
 	{
 		if (philo->id % 2 == 0)
-			smart_usleep(3e4, philo->table);
+			smart_usleep(30000, philo->table);
 	}
 	else
 	{

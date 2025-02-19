@@ -96,6 +96,7 @@ typedef struct s_main
 	long		running_threads_number;
 	bool		all_threads_ready;
 	bool		end_simulation;
+	bool		failure;
 	pthread_t	monitor;
 	t_mtx		table_mutex;
 	t_mtx		print_mutex;
@@ -211,5 +212,7 @@ void	clean(t_main *table);
 bool	philo_died(t_philo *philo);
 
 void	*one_philo(void	*data);
+
+bool	failure_join(t_main *table, int index);
 
 #endif

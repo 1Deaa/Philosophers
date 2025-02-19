@@ -30,6 +30,7 @@ int	main(int argc, char **argv)
 		if (!start_simulation(&table))
 		{
 			printf("Error while simulation\n");
+			clean(&table);
 			return (EXIT_FAILURE);
 		}
 		clean(&table);

@@ -84,8 +84,9 @@ bool	init_table(t_main *table)
 {
 	table->end_simulation = false;
 	table->all_threads_ready = false;
+	table->failure = false;
 	table->running_threads_number = 0;
-	table->philos = ft_malloc(sizeof(t_philo) * table->philo_nbr);
+	table->philos = calloc(sizeof(t_philo) * table->philo_nbr, 1);
 	if (!ft_mutex(&table->table_mutex, INIT))
 		return (false);
 	if (!ft_mutex(&table->print_mutex, INIT))

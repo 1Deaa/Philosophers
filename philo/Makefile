@@ -3,7 +3,7 @@ NAME = philo
 
 #PROJECT FILES
 FILES = analyze_input.c ft_atol.c init_table.c philo.c print.c safe_functions.c \
-		simulation.c sync.c utils.c wrappers.c monitor.c clean.c one_philo.c
+		simulation.c sync.c utils.c wrappers.c monitor.c clean.c one_philo.c thread_error.c
 
 #COMPILER
 CC = cc
